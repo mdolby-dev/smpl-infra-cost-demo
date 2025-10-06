@@ -17,7 +17,7 @@ resource "google_spanner_instance" "example" {
   name         = "example-spanner-instance"
   config       = "regional-us-central1"
   display_name = "Example Spanner Instance"
-  num_nodes    = 3  # This will affect the cost significantly
+  num_nodes    = 12  # This will affect the cost significantly
 }
 
 # Spanner Database
@@ -71,7 +71,7 @@ resource "google_pubsub_subscription" "example" {
 
   message_retention_duration = "604800s"  # 7 days
   retain_acked_messages     = true
-  ack_deadline_seconds      = 20
+  ack_deadline_seconds      = 240
 }
 
 # Dataflow Job
@@ -85,8 +85,8 @@ resource "google_dataflow_job" "example" {
     output    = "gs://my-test-bucket/output"
   }
 
-  machine_type = "n1-standard-2"  # This affects the compute cost
-  max_workers  = 5                # This affects both compute and memory costs
+  machine_type = "n1-standard-32"  # This affects the compute cost
+  max_workers  = 10                # This affects both compute and memory costs
 }
 
 # Storage Bucket for Dataflow
@@ -97,7 +97,7 @@ resource "google_storage_bucket" "dataflow_bucket" {
 
   lifecycle_rule {
     condition {
-      age = 3  # days
+      age = 30  # days
     }
     action {
       type = "Delete"
